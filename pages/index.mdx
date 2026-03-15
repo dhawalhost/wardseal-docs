@@ -1,0 +1,22 @@
+# Welcome to Nextra Template
+
+This is a template for building documentation with Nextra.
+
+import { Cards, Card } from 'nextra/components'
+import Counter from '../components/counters'
+
+## Get Started
+
+<Cards>
+  <Card title="Installation" href="/docs/getting-started/installation" />
+  <Card title="Configuration" href="/docs/getting-started/configuration" />
+  <Card title="Advanced Usage" href="/docs/guides/advanced" />
+</Cards>
+
+## Interactive Components
+
+You can use React components in your MDX files.
+
+<div className="p-4 border border-gray-200 dark:border-gray-900 rounded mt-6">
+  <Counter />
+</div>
