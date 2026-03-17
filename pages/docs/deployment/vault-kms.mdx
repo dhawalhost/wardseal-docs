@@ -1,0 +1,51 @@
+# Vault KMS Integration
+
+WardSeal supports HashiCorp Vault as a Key Management Service (KMS) provider for signing JWT tokens and encrypting sensitive data.
+
+## Overview
+
+By offloading cryptographic operations to Vault, WardSeal ensures that private keys never leave the secure boundary of your HSM or Vault instance. This is the recommended configuration for production and high-security environments.
+
+## Configuration
+
+To enable Vault KMS, update your `values.yaml` or environment variables:
+
+### Helm Configuration
+
+```yaml
+kms:
+  provider: vault
+  vault:
+    address: "http://vault.vault.svc.cluster.local:8200"
+    role: "wardseal-role"
+    mountPath: "wardseal-kms"
+    keyName: "jwt-signer"
+```
+
+### Environment Variables
+
+| Variable | Description |
+| :--- | :--- |
+| `KMS_PROVIDER` | Set to `vault` |
+| `VAULT_ADDR` | The address of your Vault instance |
+| `VAULT_ROLE` | The Vault role for AppRole authentication |
+| `VAULT_SECRET_ID` | The Secret ID (provided via Kubernetes secret) |
+| `VAULT_ROLE_ID` | The Role ID (provided via Kubernetes secret) |
+
+## Authentication (AppRole)
+
+WardSeal uses the **AppRole** authentication method to connect to Vault. You must ensure that the WardSeal pods have access to the `RoleID` and `SecretID`.
+
+In Kubernetes, this is typically handled by mounting a secret:
+
+```bash
+kubectl create secret generic wardseal-vault-kms \
+  --from-literal=role-id="your-role-id" \
+  --from-literal=secret-id="your-secret-id"
+```
+
+## Supported Operations
+
+- **OIDC Token Signing**: RS256, ES256, and other Vault-supported algorithms.
+- **Field-level Encryption**: Encrypting sensitive user metadata.
+- **Session Protection**: Encrypting cookie-based sessions.

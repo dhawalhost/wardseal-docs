@@ -1,0 +1,41 @@
+replicaCount: 1
+
+image:
+  repository: ghcr.io/dhawalhost/wardseal-docs
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext: {}
+securityContext: {}
+
+service:
+  type: ClusterIP
+  port: 80
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 20m
+    memory: 64Mi
+
+autoscaling:
+  enabled: false
+
+ingress:
+  enabled: true
+  className: "traefik"
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+    traefik.ingress.kubernetes.io/router.tls: "false"
+  hosts:
+    - host: docs.wardseal.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []

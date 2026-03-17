@@ -52,3 +52,12 @@ To include custom metadata in OIDC tokens, configure the "Claim Attribute Mappin
 ## Search & Filtering
 The WardSeal API supports SCIM-style filtering for user lookup:
 `GET /api/v1/users?filter=email eq "jane.doe@example.com"`
+
+## Global Email Uniqueness
+
+By default, WardSeal enforces **Global Email Uniqueness**. This means:
+- No two users can share the same email address across any organization or tenant.
+- If a user signs up with an email that already exists in another tenant, the system will block the creation to prevent account hijacking and user confusion.
+- Existing users can be assigned to multiple organizations through the "Cross-Tenant Assignments" feature in the Admin Console.
+
+This policy ensures that a user's identity remains consistent and secure across the entire WardSeal ecosystem.

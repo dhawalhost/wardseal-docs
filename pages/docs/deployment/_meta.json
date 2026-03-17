@@ -1,5 +1,6 @@
 {
   "self-hosting": "Self-Hosting",
   "helm-reference": "Helm Chart Reference",
+  "vault-kms": "Vault KMS Integration",
   "ha-dr": "HA & Disaster Recovery"
 }

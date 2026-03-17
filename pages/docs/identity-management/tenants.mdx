@@ -15,6 +15,16 @@ Each WardSeal instance can host multiple **Organizations** (Tenants). Each organ
 
 Tenants share the same underlying infrastructure (databases, services) but are cryptographically separated at the data layer. A user in Organization A cannot access resources in Organization B unless explicitly shared.
 
+## Tenant Slugs
+
+In addition to the unique `tenant_id` (UUID), each organization can be assigned a human-readable **Slug** (e.g., `acme-corp`). 
+
+Slugs can be used in URLs and API requests interchangeably with IDs:
+- **Auth URL:** `https://auth.wardseal.local/t/acme-corp/.well-known/openid-configuration`
+- **API Request:** `GET /api/v1/users?tenant=acme-corp`
+
+Slugs are globally unique across the WardSeal instance and provide a more intuitive experience for developers and end-users.
+
 ## Custom Branding
 
 Each organization can have its own look and feel, including:

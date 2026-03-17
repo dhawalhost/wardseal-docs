@@ -71,3 +71,14 @@ WardSeal provides the following claims in the ID Token and Userinfo endpoint:
 | `Display Name` | `name` | Combined first and last name. |
 | `Groups` | `groups` | Array of group names (if `groups` scope is requested). |
 | `Metadata` | `wardseal_metadata` | Custom attributes (if configured). |
+
+## Application Access Enforcement
+
+WardSeal enforces strict **Application Access Control**. By default, users cannot access an application unless they are explicitly assigned to it.
+
+### Assigning Users
+Assignments can be managed via:
+1. **Admin Console**: Navigate to `Applications > {App Name} > Assignments` to add users or groups.
+2. **Management API**: Use the assignments endpoint to programmatically link users to applications.
+
+If an unassigned user attempts to authenticate via OIDC, they will be redirected back to the application with an `access_denied` error after a successful login.
