@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: ghcr.io/dhawalhost/wardseal-docs
-  tag: "latest"
+  tag: "sha-7e5d3b9"
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
