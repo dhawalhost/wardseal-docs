@@ -1,0 +1,26 @@
+# Developer API Access
+
+Programmatically manage your WardSeal instance using our RESTful APIs.
+
+## Authentication
+
+All API requests must be authenticated using an **API Key** or an **OAuth 2.0 Access Token**.
+
+### API Keys
+Best for background scripts and CI/CD pipelines.
+- Generate keys in the Admin Console.
+- Keys are tied to a specific Organization.
+- Include the key in the `X-API-Key` header.
+
+### OAuth 2.0 Tokens
+Best for building custom admin tools or integrating WardSeal with other platforms.
+- Use the `client_credentials` grant type.
+- Scopes control the level of access (e.g., `users:read`, `apps:write`).
+
+## API Explorer
+
+WardSeal provides an interactive API explorer (Swagger UI) at `https://auth.yourdomain.com/docs/api`.
+
+## Rate Limiting
+
+To ensure stability, WardSeal applies rate limits to all API endpoints. If you exceed the limit, you will receive a `429 Too Many Requests` response.

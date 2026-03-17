@@ -1,5 +1,12 @@
 {
-  "index": "Introduction",
+  "index": "Welcome",
+  "architecture": "Architecture",
   "getting-started": "Getting Started",
-  "guides": "Guides"
+  "identity-management": "Identity Management",
+  "authentication": "Authentication",
+  "applications": "Applications",
+  "governance": "Governance",
+  "developer": "Developer",
+  "deployment": "Deployment",
+  "guides": "Operator Guides"
 }

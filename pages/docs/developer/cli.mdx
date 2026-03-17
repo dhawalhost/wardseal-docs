@@ -1,0 +1,92 @@
+# CLI Reference
+
+The `wardseal` CLI is a powerful tool for managing your identity infrastructure, tenants, applications, and users.
+
+## Global Options
+
+The following options apply to all commands:
+
+| Flag | Default | Description |
+| :--- | :--- | :--- |
+| `-base-url` | Service Default | The base URL of the target service (8080/8081/8082). |
+| `-tenant` | `1111...` | The UUID of the tenant you are managing. |
+| `-user-id` | (none) | The UUID of the acting user (required for governance actions). |
+
+---
+
+## Authentication & Setup
+
+### Login
+Verify credentials and get a session token.
+```bash
+wardseal auth login -username "admin@example.com" -password "..."
+```
+
+### System Setup
+Trigger initial system setup (for fresh installations).
+```bash
+wardseal auth setup
+```
+
+---
+
+## Application Management
+
+### Create Client
+Register a new OAuth client.
+```bash
+wardseal create \
+  -client-id "my-app" \
+  -name "My Application" \
+  -type public \
+  -redirects "http://localhost:3000/callback"
+```
+
+### Update Client
+Modify application configuration.
+```bash
+wardseal update \
+  -client-id "my-app" \
+  -name "Updated Name" \
+  -type confidential \
+  -secret "new-secret"
+```
+
+---
+
+## User & Group Management
+
+### Create User
+```bash
+wardseal user create -email "jane@example.com" -password "..."
+```
+
+### Manage Groups
+```bash
+wardseal group create -name "Admins"
+wardseal group add-user -group-id <GID> -user-id <UID>
+```
+
+---
+
+## Access Governance
+
+### Create Request
+Submit an access request for a resource.
+```bash
+wardseal request create -type client -id "app-123" -reason "Need for debug" -user-id <UID>
+```
+
+### Approve/Reject
+Approve or reject a pending request.
+```bash
+wardseal request approve -id <REQ_ID> -comment "Approved" -user-id <UID>
+```
+
+---
+
+## Local Development
+Run directly with Go:
+```bash
+go run ./cmd/wardseal <command> [options]
+```

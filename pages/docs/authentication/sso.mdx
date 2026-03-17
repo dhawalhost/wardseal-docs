@@ -1,0 +1,26 @@
+# Single Sign-On (SSO)
+
+Enable your users to sign in once and access all their applications.
+
+## Supported Protocols
+
+WardSeal supports the industry-standard protocols for identity federation:
+
+- **OpenID Connect (OIDC)**: The modern standard for authentication, built on top of OAuth 2.0.
+- **SAML 2.0**: The classic enterprise standard for XML-based identity exchange.
+
+## SSO Flows
+
+### Service Provider (SP) Initiated
+The user starts at the application (e.g., Slack), which redirects them to WardSeal for authentication.
+
+### Identity Provider (IdP) Initiated
+The user starts at the WardSeal User Dashboard, clicks an application icon, and is automatically signed into the application.
+
+## Enterprise Federation
+
+Connect WardSeal to external Identity Providers:
+- **Okta** (SAML/OIDC)
+- **Azure AD / Microsoft Entra ID** (SAML/OIDC)
+- **Google Workspace** (OIDC)
+- **Auth0** (SAML/OIDC)

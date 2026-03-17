@@ -1,0 +1,61 @@
+# Webhooks & Event Notifications
+
+Webhooks allow you to listen for real-time events happening in your WardSeal environment and trigger external workflows (e.g., notifying Slack, syncing with a CRM).
+
+## Event Payloads
+
+Wardseal sends a `POST` request with a JSON payload for every successfully delivered event.
+
+### Example: `user.created`
+```json
+{
+  "event_id": "evt_01H2...",
+  "type": "user.created",
+  "timestamp": "2024-03-16T21:30:00Z",
+  "data": {
+    "user_id": "usr_998877",
+    "email": "newuser@example.com",
+    "tenant_id": "tenant-123"
+  }
+}
+```
+
+## Signature Verification
+
+To ensure that the webhook request originated from WardSeal, you must verify the signature included in the `X-WardSeal-Signature` header.
+
+### Verification Logic (Node.js)
+
+```javascript
+const crypto = require('crypto');
+
+function verifySignature(payload, signature, secret) {
+    const expected = crypto
+        .createHmac('sha256', secret)
+        .update(payload)
+        .digest('hex');
+    
+    return crypto.timingSafeEqual(
+        Buffer.from(signature),
+        Buffer.from(expected)
+    );
+}
+```
+
+### Verification Logic (Go)
+
+```go
+func VerifySignature(payload []byte, signature string, secret string) bool {
+    h := hmac.New(sha256.New, []byte(secret))
+    h.Write(payload)
+    expected := hex.EncodeToString(h.Sum(nil))
+    
+    return hmac.Equal([]byte(signature), []byte(expected))
+}
+```
+
+## Retry Policy
+WardSeal implements an exponential backoff strategy for failed webhooks:
+- **First Retry**: 5 minutes
+- **Total Retries**: 5
+- **Timeout**: 10 seconds per request

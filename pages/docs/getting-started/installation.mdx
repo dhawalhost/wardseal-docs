@@ -1,11 +1,105 @@
-# Installation
+# Installation & Setup
 
-Here's how to install the project.
+WardSeal can be deployed in various environments depending on your needs. For local development and evaluation, we recommend **Docker Compose** or **Local Kubernetes (Rancher Desktop)**.
 
 ## Prerequisites
 
-- Node.js 18+
+Before you begin, ensure you have the following tools installed:
 
-## Steps
+- **Git**: To clone the repository.
+- **Node.js 20+**: For building the frontend UIs.
+- **Go 1.22+**: Required for manual service builds and CLI tools.
+- **Docker & Docker Compose**: For containerized deployment.
+- **kubectl & Helm**: If you plan to deploy on Kubernetes.
 
-1. Run `npm install`
+## Path 1: Docker Compose (Easiest)
+
+Docker Compose is the fastest way to get a full WardSeal stack running locally.
+
+1. **Clone the Repo**:
+   ```bash
+   git clone https://github.com/dhawalhost/wardseal.git
+   cd wardseal
+   ```
+
+2. **Generate JWT Keys**:
+   WardSeal requires a public/private key pair for signing tokens.
+   ```bash
+   ./scripts/generate-dev-keys.sh
+   ```
+
+3. **Start the Stack**:
+   ```bash
+   docker-compose up -d
+   ```
+
+4. **Access the Services**:
+   - Landing Page: `http://wardseal.local`
+   - Admin Console: `http://console.wardseal.local`
+   - Auth Service: `http://auth.wardseal.local`
+
+> [!NOTE]
+> You may need to add these domains to your `/etc/hosts` file (see the Troubleshooting section below).
+
+---
+
+## Path 2: Local Kubernetes (Rancher Desktop)
+
+This path most closely mirrors a production environment and is recommended for testing platform governance and scalability.
+
+1. **Prerequisites**:
+   - Install **Rancher Desktop**.
+   - Set the container runtime to `dockerd` or `containerd`.
+   - Set the `kubectl` context to `rancher-desktop`.
+
+2. **Run the Deployment Script**:
+   We provide a helper script that automates the building of images, creation of secrets, and Helm deployment.
+   ```bash
+   ./scripts/deploy_local_k8s.sh
+   ```
+
+3. **Verify Deployment**:
+   ```bash
+   kubectl get pods -n wardseal-local
+   ```
+
+---
+
+## Path 3: Development Build (Source)
+
+If you are contributing to WardSeal or want to run services without Docker:
+
+1. **Install Dependencies**:
+   ```bash
+   npm install --prefix web/admin
+   npm install --prefix web/landing
+   go mod download
+   ```
+
+2. **Run Infrastructure**:
+   You still need PostgreSQL and Redis. You can start just these via Docker:
+   ```bash
+   docker-compose up -d postgres redis
+   ```
+
+3. **Run a Service**:
+   ```bash
+   go run cmd/authsvc/main.go
+   ```
+
+---
+
+## Troubleshooting
+
+### 1. /etc/hosts Configuration
+If you cannot resolve `.wardseal.local` domains, add the following to your `/etc/hosts`:
+
+```
+127.0.0.1 wardseal.local console.wardseal.local auth.wardseal.local api.wardseal.local help.wardseal.local
+```
+
+### 2. Missing JWT Keys
+If `authsvc` fails to start with a "file not found" error for `.pem` files, ensure you've run the `generate-dev-keys.sh` script and that the keys are in `deploy/dev-keys/`.
+
+### 3. Port Conflicts
+Ensure port `80`, `5432`, and `6379` are not being used by other local services (like a local Postgres or Nginx installation).

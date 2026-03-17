@@ -1,0 +1,54 @@
+# User Management
+
+Manage your end-users, administrators, and their lifecycles within WardSeal.
+
+## Lifecycle Management
+
+### Programmatic User Creation (Admin API)
+
+While you can manage users via the Admin Console, most production systems use the WardSeal API for automated onboarding.
+
+**Request:**
+```http
+POST /api/v1/users
+Host: api.wardseal.local
+Authorization: Bearer {ADMIN_TOKEN}
+Content-Type: application/json
+
+{
+  "email": "jane.doe@example.com",
+  "username": "janedoe",
+  "name": "Jane Doe",
+  "password": "TemporaryPassword123!",
+  "tenant_id": "tenant-abcd",
+  "metadata": {
+    "employee_id": "EMP-456",
+    "department": "Engineering"
+  }
+}
+```
+
+### User States
+
+- **Active**: Full access to assigned resources.
+- **Suspended**: Authentication is blocked. Used for temporary leave or security investigations.
+- **Deactivated**: Account is logically deleted. All active sessions are terminated immediately.
+
+## Custom Metadata & Schema
+
+WardSeal allows you to extend the user profile with custom attributes. These can be defined globally or per tenant.
+
+### Defining Attributes
+You can define the "Type" of metadata in the console (e.g., `String`, `Boolean`, `JSON`) to ensure data consistency during API updates.
+
+### Accessing Metadata in Tokens
+To include custom metadata in OIDC tokens, configure the "Claim Attribute Mapping" in your Application settings:
+
+| OIDC Claim Name | Source Metadata Key |
+| :--- | :--- |
+| `dept` | `metadata.department` |
+| `emp_id` | `metadata.employee_id` |
+
+## Search & Filtering
+The WardSeal API supports SCIM-style filtering for user lookup:
+`GET /api/v1/users?filter=email eq "jane.doe@example.com"`

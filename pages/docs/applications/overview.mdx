@@ -1,0 +1,23 @@
+# Application Management
+
+WardSeal acts as the central hub for all your applications, providing a single point of control for access and security.
+
+## The Application Catalog
+
+The Application Catalog is where you register and manage all the software that uses WardSeal for identity.
+
+### Registering an Application
+To add an application, you'll need:
+- **Application Name**: For display in the dashboard.
+- **Protocol**: OIDC or SAML.
+- **Redirect URIs**: Where WardSeal should send the user after authentication.
+- **Logo**: (Optional) For the User Dashboard.
+
+## Application Assignments
+
+By default, applications in WardSeal are **Assignment Required**. This means a user cannot access an application unless it has been explicitly assigned to them or a group they belong to.
+
+### Assigning Users & Groups
+- **Individual Assignment**: Assign a specific user to an application.
+- **Group Assignment**: Assign a group (e.g., "Engineering") to an application.
+- **All Users**: (Not recommended) Disable assignment requirements to allow all users to access the app.

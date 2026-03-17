@@ -1,0 +1,37 @@
+# Provisioning & SCIM
+
+WardSeal's Provisioning Service (`provsvc`) automates the lifecycle of users in external applications, ensuring that manual account creation is a thing of the past.
+
+## Introduction to SCIM
+
+WardSeal supports **SCIM 2.0 (System for Cross-domain Identity Management)**, an industry-standard protocol for automating the exchange of user identity information between identity domains (like WardSeal) and downstream applications (like Slack, GitHub, or AWS).
+
+## Lifecycle Management
+
+WardSeal manages the user lifecycle through four primary actions:
+
+1. **Create**: When a user is assigned to an application in WardSeal, an account is automatically created in the downstream system.
+2. **Update**: Any changes to a user's profile in WardSeal (e.g., name, email, department) are synced to the downstream system in real-time.
+3. **Deactivate**: If a user is deactivated in WardSeal or their assignment to an app is removed, their account in the downstream system is automatically disabled.
+4. **Delete**: (Optional) Fully remove user data from the downstream system based on your organization's retention policies.
+
+## Configuring Provisioning
+
+To enable provisioning for an OIDC or SAML application:
+
+1. **Authentication**: Most SCIM-enabled apps require a **Bearer Token** for authentication. Generate this token in the target application and provide it in the WardSeal App Settings.
+2. **Endpoint URL**: Provide the base URL of the SCIM API for the application (e.g., `https://api.slack.com/scim/v2`).
+3. **Attribute Mapping**: Define how WardSeal attributes (e.g., `user.email`) map to SCIM attributes (e.g., `urn:ietf:params:scim:schemas:core:2.0:User:userName`).
+
+## Provisioning Logs
+
+The `provsvc` maintains detailed logs for every provisioning action. You can view these in the Admin Console to troubleshoot synchronization issues:
+
+- **Success**: The account was synced successfully.
+- **Retrying**: The downstream system returned a transient error (e.g., 503 Service Unavailable). WardSeal will retry automatically.
+- **Fail**: A permanent error occurred (e.g., 401 Unauthorized or 400 Bad Request). These require manual intervention.
+
+## SCIM Outbound vs. Inbound
+
+- **Outbound (Sync to Apps)**: WardSeal pushes identity changes to downstream SaaS apps. (Primary Focus)
+- **Inbound (Sync from HRIS)**: WardSeal can also be configured to receive identity data from HRIS systems like Workday or BambooHR to serve as the system of record.

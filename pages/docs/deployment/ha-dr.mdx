@@ -1,0 +1,25 @@
+# High Availability & Disaster Recovery
+
+Ensure your identity infrastructure is always available and your data is protected.
+
+## High Availability (HA)
+
+WardSeal is designed to be stateless, allowing you to run multiple instances of the service behind a load balancer.
+
+### Multi-Region Deployment
+For global availability, deploy WardSeal across multiple cloud regions.
+- Use a Global Load Balancer (e.g., Cloudflare, AWS Global Accelerator).
+- Implement database replication (e.g., Aurora Global Database).
+
+## Disaster Recovery (DR)
+
+### Database Backups
+Automate daily snapshots of your PostgreSQL database. We recommend a 30-day retention period.
+
+### Secrets Backup
+If you are using HashiCorp Vault, ensure you have a backup of the Vault unseal keys and the integrated storage.
+
+### RTO & RPO
+WardSeal aims for:
+- **RTO (Recovery Time Objective)**: < 15 minutes.
+- **RPO (Recovery Point Objective)**: < 5 minutes.

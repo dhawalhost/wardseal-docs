@@ -1,0 +1,6 @@
+{
+  "policies": "Identity & Access Policies",
+  "rbac-abac": "RBAC & Permissions",
+  "access-reviews": "Access Reviews",
+  "audit": "Audit & Compliance"
+}

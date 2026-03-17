@@ -1,22 +1,25 @@
-# Welcome to Nextra Template
+# WardSeal Documentation
 
-This is a template for building documentation with Nextra.
+WardSeal is the identity infrastructure bridge for the modern cloud. Secure your users, machines, and applications with enterprise-grade auth in minutes.
 
 import { Cards, Card } from 'nextra/components'
-import Counter from '../components/counters'
 
-## Get Started
+## Core Capabilities
 
 <Cards>
-  <Card title="Installation" href="/docs/getting-started/installation" />
-  <Card title="Configuration" href="/docs/getting-started/configuration" />
-  <Card title="Advanced Usage" href="/docs/guides/advanced" />
+  <Card title="Identity Management" href="/docs/identity-management/users" />
+  <Card title="Authentication" href="/docs/authentication/sso" />
+  <Card title="Application Catalog" href="/docs/applications/overview" />
 </Cards>
 
-## Interactive Components
+## Platform Security
 
-You can use React components in your MDX files.
+<Cards>
+  <Card title="Identity Governance" href="/docs/governance/access-reviews" />
+  <Card title="API & Webhooks" href="/docs/developer/api-access" />
+  <Card title="Self-Hosting" href="/docs/deployment/self-hosting" />
+</Cards>
 
-<div className="p-4 border border-gray-200 dark:border-gray-900 rounded mt-6">
-  <Counter />
-</div>
+## Quick Start
+
+Ready to get started? Follow our [Installation Guide](/docs/deployment/self-hosting) or jump straight to the [OIDC Integration](/docs/applications/oidc-apps).

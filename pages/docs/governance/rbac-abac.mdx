@@ -1,0 +1,47 @@
+# RBAC & Permissions
+
+WardSeal uses a robust Role-Based Access Control (RBAC) model to manage permissions within organizations and applications.
+
+## Core Concepts
+
+### 1. Permissions
+A permission is the granular unit of access, usually defined in an `action:resource` format (e.g., `users:read`, `apps:delete`).
+
+### 2. Roles
+A Role is a collection of permissions. Instead of assigning individual permissions to users, you assign them a Role (e.g., `Viewer`, `Editor`, `Admin`).
+
+### 3. Groups
+Groups are collections of users. Roles can be assigned to Groups, meaning any user added to the Group automatically inherits the permissions of that Role.
+
+## Permission Hierarchy
+
+Permissions are evaluated in the following order:
+
+1. **Explicit Denial**: If a policy or role explicitly denies an action, the access is rejected, regardless of other permits.
+2. **Explicit Permit**: If a role or group membership grants a permission, access is allowed.
+3. **Default Deny**: If no rule matches the request, the platform defaults to denying access.
+
+## Defining Roles
+
+Roles can be scoped to different levels:
+
+| Scope | Description |
+| :--- | :--- |
+| **System** | Global roles that manage the entire WardSeal instance (e.g., `SuperAdmin`). |
+| **Organization** | Roles scoped to a specific organization (e.g., `OrgAdmin`). |
+| **Application** | Roles defined within an application (e.g., `ProjectOwner` in a specific OIDC app). |
+
+## Policy Evaluation Logic
+
+When a user attempts to access a resource (via an API or a UI element), the `authsvc` calls `policysvc` with the following context:
+
+- **Subject**: The User ID and their associated Groups.
+- **Action**: The action being performed (e.g., `GET`, `POST`, or a custom action).
+- **Resource**: The identifier of the resource (e.g., `org_123`, `app_456`).
+- **Environment**: Metadata like IP address, MFA status, and time of day.
+
+## Best Practices
+
+- **Principle of Least Privilege**: Only assign the minimum roles required for a user to perform their job.
+- **Use Groups for Scaling**: Assign roles to Groups rather than individual users to simplify management as your organization grows.
+- **Audit Regularly**: Use the Governance Service to review who has what access and why.

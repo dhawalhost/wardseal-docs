@@ -1,0 +1,24 @@
+# Identity & Access Policies
+
+Define global rules for authentication, authorization, and password management.
+
+## Authentication Policies
+
+Control how and where users can sign in:
+- **MFA Proximity**: Require MFA every time, once per session, or only when risk is detected.
+- **Network Zoning**: Restrict logins to specific IP ranges or geographic locations.
+- **Session Lifetime**: Set the maximum duration of an authentication session.
+
+## Password Policies
+
+Enforce security standards for organization-managed passwords:
+- **Complexity**: Require symbols, numbers, and mixed-case letters.
+- **Length**: Set a minimum character count (e.g., 12+).
+- **History**: Prevent the reuse of the last N passwords.
+- **Expiration**: (Not recommended) Force users to change passwords every 90 days.
+
+## Authorization Policies
+
+Fine-grained controls for application access:
+- **Role-Based Access Control (RBAC)**: Assign permissions based on user roles and group memberships.
+- **Attribute-Based Access Control (ABAC)**: (Coming Soon) Use user and environmental attributes (e.g., `isManager == true`) to make access decisions.

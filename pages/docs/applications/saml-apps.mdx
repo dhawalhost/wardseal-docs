@@ -1,0 +1,23 @@
+# Integrating SAML Applications
+
+Connect legacy and enterprise applications using the SAML 2.0 protocol.
+
+## Setup Requirements
+
+To connect a SAML application (Service Provider), you will need the following information from the SP:
+- **Assertion Consumer Service (ACS) URL**: Where WardSeal sends the SAML assertion.
+- **Entity ID**: A unique identifier for the SP.
+
+## WardSeal Metadata
+
+WardSeal provides its own metadata URL that you can import into your Service Provider:
+`https://auth.yourdomain.com/t/tenant-id/saml/metadata`
+
+### Manual Configuration
+If your SP doesn't support metadata import, you'll need:
+- **SSO URL**: `https://auth.yourdomain.com/t/tenant-id/saml/login`
+- **Certificate**: Download the X.509 signing certificate from the WardSeal Console.
+
+## Attribute Mapping
+
+Map WardSeal user attributes (e.g., `email`, `firstName`) to the specific SAML attribute names expected by the application.

@@ -1,0 +1,54 @@
+# Audit & Compliance
+
+WardSeal provides centralized, tamper-proof audit logging and reporting to help organizations meet their security and compliance requirements (SOC2, HIPAA, GDPR, DPDP).
+
+## Centralized Audit Logging
+
+Every action performed within the WardSeal platform—by users, admins, or automated services—is captured as an audit event.
+
+### Key Audit Fields
+
+| Field | Description |
+| :--- | :--- |
+| **Actor** | The identity that performed the action (User ID, API Key). |
+| **Action** | The operation performed (e.g., `user:create`, `policy:delete`, `mfa:success`). |
+| **Resource** | The object affected by the action (e.g., a specific User, Group, or Application). |
+| **Timestamp** | The precise time the event occurred (ISO 8601). |
+| **IP Address** | The source IP address of the request. |
+| **Outcome** | Whether the action succeeded or failed (e.g., `Permit`, `Deny`, `Error`). |
+
+## Event Types
+
+Audit logs are categorized into several streams:
+
+- **Authentication Events**: Sign-ins, MFA challenges, password resets.
+- **Administrative Events**: Changes to roles, policies, app settings, and tenant configuration.
+- **Directory Events**: User creation, group membership changes, and profile updates.
+- **Provisioning Events**: Success or failure of identity synchronization to downstream apps.
+
+## Log Retention & Export
+
+By default, WardSeal retains audit logs for **365 days**. For long-term storage or advanced analysis, you can configure external export:
+
+- **SIEM Integration**: Stream logs to systems like Splunk, Datadog, or ELK via Webhooks.
+- **Cloud Storage**: Export raw logs to AWS S3, Google Cloud Storage, or Azure Blob Storage.
+- **Amazon CloudWatch**: Direct streaming for real-time monitoring and alerting.
+
+## Compliance Reporting
+
+WardSeal includes pre-built report templates to simplify audits:
+
+### 1. Access Review Reports
+A comprehensive list of all users and their current access rights, grouped by application or role.
+
+### 2. Privilege Escalation Logs
+Identifies every instance where a user was granted an administrative role or elevated their own permissions.
+
+### 3. Login Anomaly Reports
+Highlights suspicious activity, such as multiple failed login attempts from different geographic regions within a short time frame.
+
+## Security Best Practices
+
+- **Enable Webhooks for Real-time Alerting**: Set up alerts for critical events like `policy:delete` or `mfa:failure`.
+- **Regular Access Reviews**: Use Governance Service campaigns to ensure "Least Privilege" is maintained.
+- **Immutable Storage**: Ensure exported logs are stored in a WORM (Write Once, Read Many) compliant environment.

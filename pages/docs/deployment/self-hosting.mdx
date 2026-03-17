@@ -1,0 +1,27 @@
+# Self-Hosting WardSeal
+
+WardSeal is fully open-source (MIT licensed) and can be deployed on your own infrastructure for maximum control and data residency.
+
+## Deployment Options
+
+### Docker Compose
+Best for testing, development, and small-scale production environments.
+1. Clone the repository.
+2. Configure your `.env` file.
+3. Run `docker-compose up -d`.
+
+### Kubernetes (Recommended)
+Best for production environments requiring high availability and scalability.
+- We provide a production-ready **Helm Chart**.
+- Supported environments: EKS, GKE, AKS, and bare-metal (K3s/RKE).
+
+## Prerequisites
+
+- **Database**: PostgreSQL 13+.
+- **Secrets Management**: HashiCorp Vault (Optional but recommended).
+- **Domain**: A fully qualified domain name (FQDN) with TLS certificates.
+- **Email**: An SMTP server or provider for sending system notifications.
+
+## Upgrading
+
+See our [Changelog](https://github.com/dhawalhost/wardseal/releases) and migration guides before upgrading your production instance.

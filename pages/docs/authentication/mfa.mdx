@@ -1,0 +1,58 @@
+# Multi-Factor Authentication (MFA)
+
+Secure user accounts with an additional layer of security beyond passwords. WardSeal facilitates MFA via industry-standard protocols, ensuring both security and ease of use.
+
+## Supported Factors
+
+- **TOTP (Time-based One-Time Password)**: Compatible with Google Authenticator, Authy, and 1Password.
+- **WebAuthn / Passkeys**: Support for biometric hardware keys like FaceID, TouchID, and YubiKeys.
+- **Email Magic Links**: Seamless one-time login links sent to the user's primary email.
+- **SMS OTP**: (Coming Soon) Secure delivery via AWS SNS or Twilio integrations.
+
+## Enrollment Flows
+
+### 1. TOTP Setup
+During enrollment, WardSeal displays a QR code containing a `totp://` URI.
+- **Algorithm**: SHA1 (Default)
+- **Digits**: 6
+- **Period**: 30 seconds
+
+**Manual Configuration Example:**
+| Key | Value |
+| :--- | :--- |
+| **Account** | `WardSeal:user@example.com` |
+| **Secret** | `JBSWY3DPEHPK3PXP` (Base32 encoded) |
+
+### 2. WebAuthn Registration
+WardSeal follows the FIDO2 standard. When a user registers a passkey:
+1. The service generates a unique **challenge**.
+2. The browser prompts the user for a biometric or hardware tap.
+3. The platform stores the **public key** and **credential ID** for future verification.
+
+## Adaptive MFA Policies
+
+You can use the WardSeal Policy Engine to enforce MFA based on the authentication context.
+
+### Example: High-Risk Access
+Require MFA only when the user is not on the corporate network.
+
+```yaml
+name: "Require MFA for Remote Access"
+condition: "auth.network.is_internal == false"
+action: "REQUIRE_MFA"
+priority: 10
+```
+
+### Example: Administrative Actions
+Enforce MFA for all users with the `admin` role.
+
+```yaml
+name: "Admin MFA Enforcement"
+condition: "user.roles.contains('admin')"
+action: "REQUIRE_MFA"
+priority: 20
+```
+
+## Security Best Practices
+- **Recovery Codes**: Always encourage users to save their 8-digit recovery codes during MFA setup.
+- **Least Privilege**: Only bypass MFA for dedicated service accounts restricted to specific IP ranges.

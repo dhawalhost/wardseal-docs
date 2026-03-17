@@ -1,0 +1,25 @@
+# Organizations & Tenants
+
+WardSeal is built from the ground up to support multi-tenant SaaS applications and large enterprises.
+
+## Tenancy Model
+
+Each WardSeal instance can host multiple **Organizations** (Tenants). Each organization is a fully isolated namespace with its own:
+- Users & Groups
+- Applications
+- Identity Providers (SSO)
+- Branding & Custom Domains
+- Audit Logs
+
+## Isolation
+
+Tenants share the same underlying infrastructure (databases, services) but are cryptographically separated at the data layer. A user in Organization A cannot access resources in Organization B unless explicitly shared.
+
+## Custom Branding
+
+Each organization can have its own look and feel, including:
+- Logo
+- Favicon
+- Color scheme
+- Custom Email Templates
+- Custom Login URL (e.g., `auth.yourcustomer.com`)

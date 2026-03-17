@@ -1,0 +1,98 @@
+# Helm Chart Reference
+
+The WardSeal Helm Chart is the recommended way to deploy the platform on production Kubernetes clusters (EKS, GKE, AKS, or bare-metal).
+
+## Deployment Overview
+
+The chart deploys all core microservices (`authsvc`, `dirsvc`, `govsvc`, etc.) along with their necessary Kubernetes primitives (Deployments, Services, Ingreses, ConfigMaps).
+
+## Key Configuration Sections
+
+### 1. Global Settings
+These values apply to all components in the chart.
+
+| Parameter | Default | Description |
+| :--- | :--- | :--- |
+| `global.domain` | `wardseal.local` | The base domain for your deployment. |
+| `global.environment` | `production` | The deployment environment (affects logging levels and security headers). |
+| `global.tls.enabled` | `true` | Whether to enable TLS for all Ingress resources. |
+
+### 2. Database & Persistence
+WardSeal requires PostgreSQL and Redis. You can deploy these within the cluster or use managed services.
+
+```yaml
+database:
+  host: postgres-svc
+  port: 5432
+  user: ward_admin
+  name: wardseal_db
+  # It is highly recommended to use a Kubernetes Secret for the password
+  passwordSecret: "wardseal-db-credentials"
+
+redis:
+  host: redis-svc
+  port: 6379
+```
+
+### 3. Ingress Configuration
+Controls how traffic enters the cluster.
+
+```yaml
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+  hosts:
+    - host: auth.wardseal.local
+      paths:
+        - path: /
+          service: authsvc
+    - host: console.wardseal.local
+      paths:
+        - path: /
+          service: adminui
+```
+
+### 4. Resource Overrides
+You can set CPU and Memory limits for each service to ensure cluster stability.
+
+```yaml
+authsvc:
+  replicaCount: 3
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 200m
+      memory: 256Mi
+```
+
+### 5. KMS & Vault Integration
+For encrypting sensitive data at rest.
+
+```yaml
+vault:
+  enabled: true
+  address: "https://vault.internal:8200"
+  role: "wardseal-role"
+  authPath: "auth/kubernetes/login"
+```
+
+## Installing the Chart
+
+1. **Add the Repository**:
+   `helm repo add wardseal https://charts.wardseal.com`
+
+2. **Update Dependencies**:
+   `helm dependency update`
+
+3. **Install**:
+   `helm install wardseal wardseal/wardseal -f my-values.yaml`
+
+## Upgrading
+
+Before upgrading, always back up your PostgreSQL database and review the [Migration Guide](https://github.com/dhawalhost/wardseal/blob/main/docs/migrations.md) for breaking changes.
+
+`helm upgrade wardseal wardseal/wardseal -f my-values.yaml`

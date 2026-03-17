@@ -1,0 +1,73 @@
+# Integrating OIDC Applications
+
+WardSeal acts as an OpenID Connect (OIDC) Provider, allowing you to secure your applications using standard OAuth 2.0 and OIDC flows.
+
+## Configuration Parameters
+
+When registering an OIDC application, you will need:
+
+| Parameter | Value / Example |
+| :--- | :--- |
+| **Issuer (Discovery)** | `https://auth.wardseal.local/t/{tenant_id}/.well-known/openid-configuration` |
+| **Authorization Endpoint** | `https://auth.wardseal.local/t/{tenant_id}/oauth2/authorize` |
+| **Token Endpoint** | `https://auth.wardseal.local/t/{tenant_id}/oauth2/token` |
+| **Userinfo Endpoint** | `https://auth.wardseal.local/t/{tenant_id}/oauth2/userinfo` |
+
+## Integration Examples
+
+### 1. Next.js (NextAuth.js)
+
+```javascript
+import NextAuth from "next-auth"
+
+export default NextAuth({
+  providers: [
+    {
+      id: "wardseal",
+      name: "WardSeal",
+      type: "oauth",
+      wellKnown: "https://auth.wardseal.local/t/my-tenant/.well-known/openid-configuration",
+      authorization: { params: { scope: "openid email profile" } },
+      clientId: process.env.WARDSEAL_CLIENT_ID,
+      clientSecret: process.env.WARDSEAL_CLIENT_SECRET,
+      profile(profile) {
+        return {
+          id: profile.sub,
+          name: profile.name,
+          email: profile.email,
+        }
+      },
+    }
+  ]
+})
+```
+
+### 2. Node.js (Passport.js)
+
+```javascript
+const OAuth2Strategy = require('passport-oauth2');
+
+passport.use(new OAuth2Strategy({
+    authorizationURL: 'https://auth.wardseal.local/t/my-tenant/oauth2/authorize',
+    tokenURL: 'https://auth.wardseal.local/t/my-tenant/oauth2/token',
+    clientID: process.env.WARDSEAL_CLIENT_ID,
+    clientSecret: process.env.WARDSEAL_CLIENT_SECRET,
+    callbackURL: "http://localhost:3000/auth/wardseal/callback"
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    // User logic here
+  }
+));
+```
+
+## Standard Attribute Mapping
+
+WardSeal provides the following claims in the ID Token and Userinfo endpoint:
+
+| WardSeal Attribute | OIDC Claim | Description |
+| :--- | :--- | :--- |
+| `User ID` | `sub` | Unique immutable identifier. |
+| `Email` | `email` | Primary email address. |
+| `Display Name` | `name` | Combined first and last name. |
+| `Groups` | `groups` | Array of group names (if `groups` scope is requested). |
+| `Metadata` | `wardseal_metadata` | Custom attributes (if configured). |
