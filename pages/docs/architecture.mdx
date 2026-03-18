@@ -37,7 +37,7 @@ graph TD
 The heart of the platform. It handles all authentication flows, including OIDC, SAML, and Social Login. It issues JWTs and interacts with `policysvc` to evaluate login-time policies (MFA, IP restrictions).
 
 ### 2. Directory Service (`dirsvc`)
-Manages the core identity data: users, groups, organizations, and tenants. It ensures strict isolation between different tenants and provides the primary API for identity management.
+Manages the core identity data: users, groups, organizations, and tenants. It ensures strict isolation between different tenants and provides the primary API for identity management. **Architecture Note**: Uses the Repository Pattern to abstract database operations, allowing for pluggable storage backends.
 
 ### 3. Governance Service (`govsvc`)
 Handles compliance-heavy logic, including access reviews, campaign management, and organization-level configuration. It bridges the gap between raw identity data and business logic.
@@ -50,6 +50,26 @@ Automates the lifecycle of users in external applications. It supports SCIM 2.0 
 
 ### 6. Admin Console (`adminui`)
 The primary UI for IT admins and security teams to manage their WardSeal instance, configure policies, and audit activity.
+
+## Design Principles
+
+WardSeal follows several key design principles to ensure it remains enterprise-grade and developer-friendly:
+
+### 1. Repository Pattern
+All database interactions are abstracted behind a `Repository` interface. This decoupling:
+- **Improves Testability**: Backend stores can be easily mocked in unit tests.
+- **Enables Pluggability**: Switching from PostgreSQL to another database or adding a caching layer requires minimal service-level changes.
+- **Separates Concerns**: Business logic doesn't leak into SQL queries.
+
+### 2. Interface-Based Dependency Injection
+Services depend on interfaces rather than concrete implementations. This allows for flexible wiring and easier extension of the codebase.
+
+### 3. Strict Tenant Isolation
+Isolation is enforced at the data layer. Every table includes a `tenant_id`, and all queries are automatically scoped using this identifier.
+
+### 4. Zero-Trust by Design
+- **KMS Integration**: Sensitive data is encrypted using a dedicated Key Management Service (e.g., HashiCorp Vault).
+- **Short-Lived Tokens**: Uses OIDC/SAML best practices for token lifecycle management.
 
 ## Data Consistency and Isolation
 
