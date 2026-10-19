@@ -51,6 +51,14 @@ Automates the lifecycle of users in external applications. It supports SCIM 2.0 
 ### 6. Admin Console (`adminui`)
 The primary UI for IT admins and security teams to manage their WardSeal instance, configure policies, and audit activity.
 
+## ReBAC Authorization Engine
+
+WardSeal implements a high-performance **Relationship-Based Access Control (ReBAC)** engine inspired by Google's Zanzibar. It evaluates permissions dynamically based on a graph of relationships (`(namespace:object)#relation@subject`) rather than static roles.
+
+- **Recursive Traversal**: Discovers inherited permissions via nested sets.
+- **Sync Cache**: Speeds up deep lookups while ensuring secure invalidations.
+
+
 ## Design Principles
 
 WardSeal follows several key design principles to ensure it remains enterprise-grade and developer-friendly:

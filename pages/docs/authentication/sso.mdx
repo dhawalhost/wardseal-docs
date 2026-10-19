@@ -24,3 +24,24 @@ Connect WardSeal to external Identity Providers:
 - **Azure AD / Microsoft Entra ID** (SAML/OIDC)
 - **Google Workspace** (OIDC)
 - **Auth0** (SAML/OIDC)
+
+## Social Login & Identity Federation
+
+WardSeal supports Identity Federation, allowing users to sign in via external Identity Providers (IdPs) using standard OIDC/OAuth2.
+
+### Just-In-Time (JIT) Provisioning
+When a user authenticates via an external provider for the first time, WardSeal automatically provisions a local profile and links the identities securely.
+
+### Endpoint: `POST /social/login`
+
+Exchanges an authorization code from an external provider for a WardSeal token.
+
+**Request Payload:**
+```json
+{
+  "provider": "google",
+  "code": "auth_code_from_provider",
+  "redirect_uri": "https://app.wardseal.com/callback"
+}
+```
+
