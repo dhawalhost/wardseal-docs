@@ -5,6 +5,8 @@ const config: DocsThemeConfig = {
     logo: (
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <img src="/wardseal.svg" alt="WardSeal Logo" style={{ height: '24px' }} />
+            <span style={{ fontWeight: 800, letterSpacing: '-0.02em', fontSize: '16px' }}>WardSeal</span>
+            <span style={{ fontSize: '10px', fontWeight: 600, letterSpacing: '0.15em', textTransform: 'uppercase', opacity: 0.4 }}>Docs</span>
         </div>
     ),
     project: {
